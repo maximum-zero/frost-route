@@ -43,19 +43,19 @@ payload:
 
 검증:
 
-| 필드 | 규칙 |
-|---|---|
-| `schemaVersion` | `1` |
-| `messageId` | UUID |
-| `vehicleId` | 토픽 ID와 일치 |
-| `sessionId` | UUID |
-| `sequence` | 0 이상의 정수 |
-| `recordedAt` | UTC ISO 8601, 과거 24시간~미래 5분 |
-| `latitude` | -90~90 |
-| `longitude` | -180~180 |
-| `speedKph` | 0~200 |
-| `heading` | 0 이상 360 미만 |
-| `temperatureC` | -50~50 |
+| 필드            | 규칙                               |
+| --------------- | ---------------------------------- |
+| `schemaVersion` | `1`                                |
+| `messageId`     | UUID                               |
+| `vehicleId`     | 토픽 ID와 일치                     |
+| `sessionId`     | UUID                               |
+| `sequence`      | 0 이상의 정수                      |
+| `recordedAt`    | UTC ISO 8601, 과거 24시간~미래 5분 |
+| `latitude`      | -90~90                             |
+| `longitude`     | -180~180                           |
+| `speedKph`      | 0~200                              |
+| `heading`       | 0 이상 360 미만                    |
+| `temperatureC`  | -50~50                             |
 
 ## 2. 처리 흐름
 
@@ -80,14 +80,14 @@ PUBACK를 완료하지 않는다. 구현 첫 통합 테스트에서 이 동작�
 
 일반 PostgreSQL 테이블이며 telemetry 본문을 저장하지 않는다.
 
-| 컬럼 | 타입 | 제약 |
-|---|---|---|
-| `message_id` | uuid | PK |
-| `vehicle_id` | uuid | FK, NOT NULL |
-| `session_id` | uuid | NOT NULL |
-| `sequence` | bigint | NOT NULL |
-| `recorded_at` | timestamptz | NOT NULL |
-| `received_at` | timestamptz | NOT NULL |
+| 컬럼          | 타입        | 제약         |
+| ------------- | ----------- | ------------ |
+| `message_id`  | uuid        | PK           |
+| `vehicle_id`  | uuid        | FK, NOT NULL |
+| `session_id`  | uuid        | NOT NULL     |
+| `sequence`    | bigint      | NOT NULL     |
+| `recorded_at` | timestamptz | NOT NULL     |
+| `received_at` | timestamptz | NOT NULL     |
 
 - UNIQUE: `(vehicle_id, session_id, sequence)`
 - `received_at` 기준 48시간이 지난 접수 기록 cleanup
@@ -101,20 +101,20 @@ PUBACK를 완료하지 않는다. 구현 첫 통합 테스트에서 이 동작�
 
 TimescaleDB hypertable:
 
-| 컬럼 | 타입 | 제약 |
-|---|---|---|
-| `recorded_at` | timestamptz | NOT NULL, hypertable time |
-| `received_at` | timestamptz | NOT NULL |
-| `message_id` | uuid | NOT NULL |
-| `vehicle_id` | uuid | FK, NOT NULL |
-| `session_id` | uuid | NOT NULL |
-| `sequence` | bigint | NOT NULL |
-| `latitude` | double precision | NOT NULL |
-| `longitude` | double precision | NOT NULL |
-| `speed_kph` | numeric(6,2) | NOT NULL |
-| `heading` | numeric(6,2) | NOT NULL |
-| `temperature_c` | numeric(5,2) | NOT NULL |
-| `door_open` | boolean | NOT NULL |
+| 컬럼            | 타입             | 제약                      |
+| --------------- | ---------------- | ------------------------- |
+| `recorded_at`   | timestamptz      | NOT NULL, hypertable time |
+| `received_at`   | timestamptz      | NOT NULL                  |
+| `message_id`    | uuid             | NOT NULL                  |
+| `vehicle_id`    | uuid             | FK, NOT NULL              |
+| `session_id`    | uuid             | NOT NULL                  |
+| `sequence`      | bigint           | NOT NULL                  |
+| `latitude`      | double precision | NOT NULL                  |
+| `longitude`     | double precision | NOT NULL                  |
+| `speed_kph`     | numeric(6,2)     | NOT NULL                  |
+| `heading`       | numeric(6,2)     | NOT NULL                  |
+| `temperature_c` | numeric(5,2)     | NOT NULL                  |
+| `door_open`     | boolean          | NOT NULL                  |
 
 - partition time: `recorded_at`
 - chunk interval: 1일
@@ -126,21 +126,21 @@ TimescaleDB hypertable의 unique index는 partition time인 `recorded_at`을 포
 
 ## 5. `vehicle_latest_states`
 
-| 컬럼 | 타입 | 설명 |
-|---|---|---|
-| `vehicle_id` | uuid | PK, FK |
-| `recorded_at` | timestamptz | 최신 측정 시각 |
-| `received_at` | timestamptz | 최신 측정값의 서버 수신 시각 |
-| `session_id` | uuid | 최신 세션 |
-| `sequence` | bigint | 최신 sequence |
-| `latitude`, `longitude` | double precision | 최신 위치 |
-| `speed_kph` | numeric(6,2) | 최신 속도 |
-| `temperature_c` | numeric(5,2) | 최신 온도 |
-| `door_open` | boolean | 문 상태 |
-| `connection_status` | varchar(16) | ONLINE·OFFLINE |
-| `temperature_status` | varchar(16) | NORMAL·ALERT |
-| `last_live_received_at` | timestamptz | 마지막 유효 실시간 수신 시각 |
-| `updated_at` | timestamptz | 갱신 시각 |
+| 컬럼                    | 타입             | 설명                         |
+| ----------------------- | ---------------- | ---------------------------- |
+| `vehicle_id`            | uuid             | PK, FK                       |
+| `recorded_at`           | timestamptz      | 최신 측정 시각               |
+| `received_at`           | timestamptz      | 최신 측정값의 서버 수신 시각 |
+| `session_id`            | uuid             | 최신 세션                    |
+| `sequence`              | bigint           | 최신 sequence                |
+| `latitude`, `longitude` | double precision | 최신 위치                    |
+| `speed_kph`             | numeric(6,2)     | 최신 속도                    |
+| `temperature_c`         | numeric(5,2)     | 최신 온도                    |
+| `door_open`             | boolean          | 문 상태                      |
+| `connection_status`     | varchar(16)      | ONLINE·OFFLINE               |
+| `temperature_status`    | varchar(16)      | NORMAL·ALERT                 |
+| `last_live_received_at` | timestamptz      | 마지막 유효 실시간 수신 시각 |
+| `updated_at`            | timestamptz      | 갱신 시각                    |
 
 - `recordedAt`이 기존 값보다 새로운 경우에만 측정 상태 갱신
 - `abs(receivedAt - recordedAt) > 5초`이면 이력만 저장
@@ -174,14 +174,14 @@ TimescaleDB hypertable의 unique index는 partition time인 `recorded_at`을 포
 
 ## 8. 장애 처리
 
-| 장애 | 동작 |
-|---|---|
-| 잘못된 payload | 저장 거부와 reason code 로그 |
-| 미등록·비활성 차량 | 저장 거부 |
-| 중복 메시지 | 정상 멱등 종료와 counter 증가 |
-| 순서 역전 | 이력 저장, 최신 상태 미갱신 |
-| DB 장애 | transaction rollback, ACK 미완료 |
-| MQTT 단절 | exponential backoff 재연결 |
+| 장애               | 동작                             |
+| ------------------ | -------------------------------- |
+| 잘못된 payload     | 저장 거부와 reason code 로그     |
+| 미등록·비활성 차량 | 저장 거부                        |
+| 중복 메시지        | 정상 멱등 종료와 counter 증가    |
+| 순서 역전          | 이력 저장, 최신 상태 미갱신      |
+| DB 장애            | transaction rollback, ACK 미완료 |
+| MQTT 단절          | exponential backoff 재연결       |
 
 ## 9. 테스트
 

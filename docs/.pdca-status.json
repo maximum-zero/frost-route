@@ -1,9 +1,7 @@
 {
   "version": "2.0",
   "lastUpdated": "2026-07-31T05:28:46.724Z",
-  "activeFeatures": [
-    "cold-chain-fleet-monitoring"
-  ],
+  "activeFeatures": ["cold-chain-fleet-monitoring"],
   "primaryFeature": "cold-chain-fleet-monitoring",
   "features": {
     "cold-chain-fleet-monitoring": {

@@ -26,16 +26,16 @@ MVP는 이메일과 비밀번호를 이용한 단일 `ADMIN` 역할만 제공한
 
 ## 2. `admins`
 
-| 컬럼 | 타입 | 제약 |
-|---|---|---|
-| `id` | uuid | PK |
-| `email` | varchar(320) | NOT NULL |
-| `password_hash` | text | NOT NULL |
-| `role` | varchar(16) | NOT NULL, `ADMIN` |
-| `status` | varchar(16) | NOT NULL, `ACTIVE`·`DISABLED` |
-| `last_login_at` | timestamptz | NULL |
-| `created_at` | timestamptz | NOT NULL |
-| `updated_at` | timestamptz | NOT NULL |
+| 컬럼            | 타입         | 제약                          |
+| --------------- | ------------ | ----------------------------- |
+| `id`            | uuid         | PK                            |
+| `email`         | varchar(320) | NOT NULL                      |
+| `password_hash` | text         | NOT NULL                      |
+| `role`          | varchar(16)  | NOT NULL, `ADMIN`             |
+| `status`        | varchar(16)  | NOT NULL, `ACTIVE`·`DISABLED` |
+| `last_login_at` | timestamptz  | NULL                          |
+| `created_at`    | timestamptz  | NOT NULL                      |
+| `updated_at`    | timestamptz  | NOT NULL                      |
 
 - 이메일은 공백 제거와 소문자 정규화 후 저장하고 `lower(email)` unique index로
   애플리케이션 우회와 동시 요청에서도 중복을 방지한다.
@@ -44,16 +44,16 @@ MVP는 이메일과 비밀번호를 이용한 단일 `ADMIN` 역할만 제공한
 
 ## 3. `admin_sessions`
 
-| 컬럼 | 타입 | 제약 |
-|---|---|---|
-| `id` | uuid | PK |
-| `admin_id` | uuid | `admins.id` FK, NOT NULL |
-| `token_hash` | text | UNIQUE, NOT NULL |
-| `csrf_token` | text | NOT NULL |
-| `expires_at` | timestamptz | NOT NULL |
-| `last_seen_at` | timestamptz | NOT NULL |
-| `revoked_at` | timestamptz | NULL |
-| `created_at` | timestamptz | NOT NULL |
+| 컬럼           | 타입        | 제약                     |
+| -------------- | ----------- | ------------------------ |
+| `id`           | uuid        | PK                       |
+| `admin_id`     | uuid        | `admins.id` FK, NOT NULL |
+| `token_hash`   | text        | UNIQUE, NOT NULL         |
+| `csrf_token`   | text        | NOT NULL                 |
+| `expires_at`   | timestamptz | NOT NULL                 |
+| `last_seen_at` | timestamptz | NOT NULL                 |
+| `revoked_at`   | timestamptz | NULL                     |
+| `created_at`   | timestamptz | NOT NULL                 |
 
 - 브라우저에는 CSPRNG로 생성한 256bit opaque token만 전달한다.
 - DB에는 원문 token 대신 SHA-256 hash를 저장한다.
@@ -66,13 +66,13 @@ MVP는 이메일과 비밀번호를 이용한 단일 `ADMIN` 역할만 제공한
 
 ## 4. API
 
-| 메서드 | 경로 | 인증 | 기능 |
-|---|---|---|---|
-| `POST` | `/api/v1/auth/login` | 불필요 | 이메일·비밀번호 로그인 |
-| `POST` | `/api/v1/auth/logout` | 필요 | 현재 세션 폐기 |
-| `GET` | `/api/v1/auth/me` | 필요 | 현재 관리자 조회 |
-| `GET` | `/api/v1/auth/csrf` | 필요 | 현재 세션의 CSRF token 조회 |
-| `PATCH` | `/api/v1/auth/password` | 필요 | 현재 비밀번호 확인 후 변경 |
+| 메서드  | 경로                    | 인증   | 기능                        |
+| ------- | ----------------------- | ------ | --------------------------- |
+| `POST`  | `/api/v1/auth/login`    | 불필요 | 이메일·비밀번호 로그인      |
+| `POST`  | `/api/v1/auth/logout`   | 필요   | 현재 세션 폐기              |
+| `GET`   | `/api/v1/auth/me`       | 필요   | 현재 관리자 조회            |
+| `GET`   | `/api/v1/auth/csrf`     | 필요   | 현재 세션의 CSRF token 조회 |
+| `PATCH` | `/api/v1/auth/password` | 필요   | 현재 비밀번호 확인 후 변경  |
 
 로그인 실패는 계정 존재 여부, 비밀번호 오류, 비활성 상태를 구분하지 않는 동일한
 응답을 사용한다. 로그인 성공 응답에는 비밀번호 hash와 session token을 포함하지
@@ -131,17 +131,17 @@ pnpm admin:reset-password --email admin@example.com
 
 `admin_audit_logs`:
 
-| 컬럼 | 타입 | 제약 |
-|---|---|---|
-| `id` | uuid | PK |
-| `admin_id` | uuid | `admins.id` FK, NULL |
-| `action` | varchar(64) | NOT NULL |
-| `outcome` | varchar(16) | SUCCESS·FAILURE |
-| `target_type` | varchar(32) | NULL |
-| `target_id` | uuid | NULL |
-| `request_id` | varchar(64) | NULL |
-| `details` | jsonb | NOT NULL, 기본 `{}` |
-| `occurred_at` | timestamptz | NOT NULL |
+| 컬럼          | 타입        | 제약                 |
+| ------------- | ----------- | -------------------- |
+| `id`          | uuid        | PK                   |
+| `admin_id`    | uuid        | `admins.id` FK, NULL |
+| `action`      | varchar(64) | NOT NULL             |
+| `outcome`     | varchar(16) | SUCCESS·FAILURE      |
+| `target_type` | varchar(32) | NULL                 |
+| `target_id`   | uuid        | NULL                 |
+| `request_id`  | varchar(64) | NULL                 |
+| `details`     | jsonb       | NOT NULL, 기본 `{}`  |
+| `occurred_at` | timestamptz | NOT NULL             |
 
 기록:
 

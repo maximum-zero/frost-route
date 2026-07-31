@@ -23,15 +23,15 @@
 
 ## 2. 기능별 설계
 
-| 기능 | 설계 문서 | 관련 요구사항 | 주요 담당 앱 |
-|---|---|---|---|
-| 01 차량 에뮬레이터 | [01-vehicle-simulator.design.md](cold-chain-fleet-monitoring/01-vehicle-simulator.design.md) | FR-01, FR-08 | `apps/simulator` |
-| 02 텔레메트리 수집 | [02-telemetry-ingestion.design.md](cold-chain-fleet-monitoring/02-telemetry-ingestion.design.md) | FR-02~FR-06 | `apps/ingestor`, `packages/contracts`, `packages/database` |
-| 03 차량 관리 | [03-vehicle-management.design.md](cold-chain-fleet-monitoring/03-vehicle-management.design.md) | FR-09 | `apps/api`, `packages/database` |
-| 04 이상 이벤트 | [04-event-monitoring.design.md](cold-chain-fleet-monitoring/04-event-monitoring.design.md) | FR-11, FR-12 | `apps/ingestor`, `apps/api`, `apps/web` |
-| 05 관제 화면 | [05-monitoring-dashboard.design.md](cold-chain-fleet-monitoring/05-monitoring-dashboard.design.md) | FR-07, FR-10, FR-13, FR-14 | `apps/api`, `apps/web` |
-| 06 배포 기반 | [06-deployment.design.md](cold-chain-fleet-monitoring/06-deployment.design.md) | 비기능 요구사항 | `infrastructure/*` |
-| 07 관리자 인증 | [07-admin-authentication.design.md](cold-chain-fleet-monitoring/07-admin-authentication.design.md) | FR-15, FR-16 | `apps/api`, `apps/web`, `packages/database` |
+| 기능               | 설계 문서                                                                                          | 관련 요구사항              | 주요 담당 앱                                               |
+| ------------------ | -------------------------------------------------------------------------------------------------- | -------------------------- | ---------------------------------------------------------- |
+| 01 차량 에뮬레이터 | [01-vehicle-simulator.design.md](cold-chain-fleet-monitoring/01-vehicle-simulator.design.md)       | FR-01, FR-08               | `apps/simulator`                                           |
+| 02 텔레메트리 수집 | [02-telemetry-ingestion.design.md](cold-chain-fleet-monitoring/02-telemetry-ingestion.design.md)   | FR-02~FR-06                | `apps/ingestor`, `packages/contracts`, `packages/database` |
+| 03 차량 관리       | [03-vehicle-management.design.md](cold-chain-fleet-monitoring/03-vehicle-management.design.md)     | FR-09                      | `apps/api`, `packages/database`                            |
+| 04 이상 이벤트     | [04-event-monitoring.design.md](cold-chain-fleet-monitoring/04-event-monitoring.design.md)         | FR-11, FR-12               | `apps/ingestor`, `apps/api`, `apps/web`                    |
+| 05 관제 화면       | [05-monitoring-dashboard.design.md](cold-chain-fleet-monitoring/05-monitoring-dashboard.design.md) | FR-07, FR-10, FR-13, FR-14 | `apps/api`, `apps/web`                                     |
+| 06 배포 기반       | [06-deployment.design.md](cold-chain-fleet-monitoring/06-deployment.design.md)                     | 비기능 요구사항            | `infrastructure/*`                                         |
+| 07 관리자 인증     | [07-admin-authentication.design.md](cold-chain-fleet-monitoring/07-admin-authentication.design.md) | FR-15, FR-16               | `apps/api`, `apps/web`, `packages/database`                |
 
 ## 3. 구현 순서
 

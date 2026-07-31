@@ -1,0 +1,9 @@
+.agents/
+.bkit-codex/
+.codex/
+.next/
+.turbo/
+coverage/
+dist/
+node_modules/
+pnpm-lock.yaml

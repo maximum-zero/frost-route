@@ -16,17 +16,17 @@
 
 ## 2. `vehicles`
 
-| 컬럼 | 타입 | 제약 |
-|---|---|---|
-| `id` | uuid | PK |
-| `code` | varchar(32) | UNIQUE, NOT NULL |
-| `license_plate` | varchar(32) | UNIQUE, NOT NULL |
-| `name` | varchar(100) | NOT NULL |
-| `temperature_min_c` | numeric(5,2) | NOT NULL |
-| `temperature_max_c` | numeric(5,2) | NOT NULL |
-| `is_active` | boolean | NOT NULL, 기본 true |
-| `created_at` | timestamptz | NOT NULL |
-| `updated_at` | timestamptz | NOT NULL |
+| 컬럼                | 타입         | 제약                |
+| ------------------- | ------------ | ------------------- |
+| `id`                | uuid         | PK                  |
+| `code`              | varchar(32)  | UNIQUE, NOT NULL    |
+| `license_plate`     | varchar(32)  | UNIQUE, NOT NULL    |
+| `name`              | varchar(100) | NOT NULL            |
+| `temperature_min_c` | numeric(5,2) | NOT NULL            |
+| `temperature_max_c` | numeric(5,2) | NOT NULL            |
+| `is_active`         | boolean      | NOT NULL, 기본 true |
+| `created_at`        | timestamptz  | NOT NULL            |
+| `updated_at`        | timestamptz  | NOT NULL            |
 
 - `temperature_min_c < temperature_max_c` CHECK
 - `code` 변경은 telemetry 연결에 영향을 주므로 MVP에서는 금지
@@ -35,12 +35,12 @@
 
 Base path: `/api/v1`
 
-| 메서드 | 경로 | 기능 |
-|---|---|---|
-| `POST` | `/vehicles` | 차량 등록 |
-| `GET` | `/vehicles` | 차량 목록 |
-| `GET` | `/vehicles/:vehicleId` | 기본 정보와 최신 상태 |
-| `PATCH` | `/vehicles/:vehicleId` | 차량 정보 수정 |
+| 메서드  | 경로                   | 기능                  |
+| ------- | ---------------------- | --------------------- |
+| `POST`  | `/vehicles`            | 차량 등록             |
+| `GET`   | `/vehicles`            | 차량 목록             |
+| `GET`   | `/vehicles/:vehicleId` | 기본 정보와 최신 상태 |
+| `PATCH` | `/vehicles/:vehicleId` | 차량 정보 수정        |
 
 목록은 `isActive`, `cursor`, `limit`을 지원한다.
 모든 차량 관리 API는 인증된 관리자만 호출할 수 있다.

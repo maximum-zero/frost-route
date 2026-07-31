@@ -2,7 +2,28 @@
 
 > 버전: 1.0.0 | 작성일: 2026-07-31 | 상태: 승인
 
-## 1. 공통 설정
+## 1. 최초 참여 순서
+
+개발자는 자신의 GitHub 계정에 SSH 공개 키를 등록한 후 연결을 확인한다. 개인 키와
+credential은 저장소에 복사하거나 커밋하지 않는다.
+
+```bash
+ssh -T git@github.com
+git clone git@github.com:maximum-zero/frost-route.git
+cd frost-route
+```
+
+Git 커밋 작성자 정보는 각 개발자가 사용하는 이름과 GitHub 이메일로 설정한다.
+
+```bash
+git config --global user.name "본인 이름"
+git config --global user.email "본인 GitHub 이메일"
+```
+
+회사·개인 계정을 분리해야 한다면 `--global` 대신 clone 후 `--local`로 설정한다. 이메일
+공개를 원하지 않으면 GitHub가 제공하는 `noreply` 이메일을 사용한다.
+
+## 2. 공통 설정
 
 두 개발자 모두 다음 설정을 적용한다.
 
@@ -16,19 +37,33 @@ git config --global rerere.enabled true
 git config --global core.autocrlf false
 ```
 
-| 설정 | 목적 |
-|---|---|
-| `init.defaultBranch` | 기본 브랜치 `main` 통일 |
-| `pull.rebase` | pull 과정의 merge commit 방지 |
-| `rebase.autoStash` | 로컬 변경 임시 보관 후 rebase |
-| `fetch.prune` | 삭제된 원격 브랜치 정리 |
-| `push.autoSetupRemote` | 첫 push의 upstream 자동 설정 |
-| `rerere.enabled` | 반복 충돌 해결 결과 재사용 |
-| `core.autocrlf` | 줄바꿈 처리를 `.gitattributes`로 일원화 |
+| 설정                   | 목적                                    |
+| ---------------------- | --------------------------------------- |
+| `init.defaultBranch`   | 기본 브랜치 `main` 통일                 |
+| `pull.rebase`          | pull 과정의 merge commit 방지           |
+| `rebase.autoStash`     | 로컬 변경 임시 보관 후 rebase           |
+| `fetch.prune`          | 삭제된 원격 브랜치 정리                 |
+| `push.autoSetupRemote` | 첫 push의 upstream 자동 설정            |
+| `rerere.enabled`       | 반복 충돌 해결 결과 재사용              |
+| `core.autocrlf`        | 줄바꿈 처리를 `.gitattributes`로 일원화 |
 
 `autoStash`는 작업 보존을 보장하지 않는다. rebase 전 `git status`를 확인한다.
 
-## 2. Windows 추가 설정
+설정 확인:
+
+```bash
+git config user.name
+git config user.email
+git config init.defaultBranch
+git config pull.rebase
+git config rebase.autoStash
+git config fetch.prune
+git config push.autoSetupRemote
+git config rerere.enabled
+git config core.autocrlf
+```
+
+## 3. Windows 추가 설정
 
 ```bash
 git config --global core.longpaths true
@@ -45,7 +80,7 @@ git config --global core.longpaths true
 CON, PRN, AUX, NUL, COM1~COM9, LPT1~LPT9
 ```
 
-## 3. 줄바꿈
+## 4. 줄바꿈
 
 - 기본 텍스트: LF
 - `.bat`, `.cmd`: CRLF
@@ -60,7 +95,7 @@ CON, PRN, AUX, NUL, COM1~COM9, LPT1~LPT9
 git add --renormalize .
 ```
 
-## 4. 파일명과 심볼릭 링크
+## 5. 파일명과 심볼릭 링크
 
 - 파일과 디렉터리의 kebab-case 사용
 - 대소문자만 다른 파일 생성 금지
@@ -75,7 +110,7 @@ git mv fleetmap.tsx temp-map.tsx
 git mv temp-map.tsx fleet-map.tsx
 ```
 
-## 5. Rebase 작업
+## 6. Rebase 작업
 
 Git 이력이 없는 저장소는 최초 기준선 커밋 한 번만 `main`에 생성할 수 있다.
 최초 커밋 이후에는 아래 Issue·브랜치·PR 절차를 예외 없이 적용한다.
@@ -105,16 +140,25 @@ git push --force-with-lease
 - 충돌 해결 후 관련 검증 재실행
 - PR 병합 방식으로 `Rebase and merge` 사용
 
-## 6. Node와 pnpm
+## 7. Node와 pnpm
 
-workspace scaffold에서 다음 항목을 저장소에 고정한다.
+저장소는 `.nvmrc`, `package.json`, `pnpm-lock.yaml`로 실행 환경과 의존성을 고정한다.
+macOS의 nvm 또는 Windows의 nvm-windows를 사용하는 경우 다음 버전을 설치한다.
+
+```bash
+nvm install 24.18.1
+nvm use 24.18.1
+node --version
+```
+
+다른 Node 버전 관리 도구를 사용해도 되지만 `package.json`의 `engines` 범위를 충족해야 한다.
 
 ```json
 {
   "engines": {
-    "node": "<확정 버전 범위>"
+    "node": ">=24.18.0 <25"
   },
-  "packageManager": "pnpm@<확정 버전>"
+  "packageManager": "pnpm@11.15.1"
 }
 ```
 
@@ -130,16 +174,25 @@ pnpm install --frozen-lockfile
 - `node_modules`, 개인 pnpm store 커밋 금지
 - 버전 변경 PR의 package.json과 lockfile 동시 반영
 
-## 7. 크로스 플랫폼 script
+설치 후 Husky가 등록한 저장소 hook 경로를 확인한다.
+
+```bash
+git config core.hooksPath
+```
+
+결과는 `.husky/_`여야 한다. 값이 없으면 저장소 루트에서 `pnpm install --frozen-lockfile`을
+다시 실행한다.
+
+## 8. 크로스 플랫폼 script
 
 package script에서 운영체제 전용 shell 명령을 직접 사용하지 않는다.
 
-| 지양 | 대안 |
-|---|---|
-| `rm -rf` | Node script 또는 `rimraf` |
-| `cp` | Node script |
+| 지양             | 대안                       |
+| ---------------- | -------------------------- |
+| `rm -rf`         | Node script 또는 `rimraf`  |
+| `cp`             | Node script                |
 | inline 환경 변수 | 설정 파일 또는 `cross-env` |
-| `docker-compose` | `docker compose` |
+| `docker-compose` | `docker compose`           |
 
 Husky hook은 복잡한 shell 로직 없이 다음 수준으로 유지한다.
 
@@ -147,7 +200,31 @@ Husky hook은 복잡한 shell 로직 없이 다음 수준으로 유지한다.
 pre-commit -> pnpm exec lint-staged
 ```
 
-## 8. 로컬 전용 설정
+## 9. 작업 시작 전 최종 확인
+
+```bash
+git remote -v
+git status --short --branch
+node --version
+pnpm --version
+git config core.hooksPath
+pnpm format:check
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm build
+```
+
+- `origin`이 FrostRoute 저장소를 가리키는지 확인
+- 기본 작업 기준 브랜치가 `main`인지 확인
+- Node.js가 `24.x`, pnpm이 `11.15.1`인지 확인
+- 공통 검증이 모두 성공하는지 확인
+- 실제 작업은 Issue 생성 후 Issue 번호를 포함한 브랜치에서 시작
+
+GitHub 저장소 관리자는 `main` 직접 push 차단과 `Rebase and merge`만 허용하는지 별도로
+확인한다. 이 설정은 로컬 Git 설정이나 저장소 파일만으로 강제할 수 없다.
+
+## 10. 로컬 전용 설정
 
 다음 항목은 저장소에 커밋하지 않는다.
 
