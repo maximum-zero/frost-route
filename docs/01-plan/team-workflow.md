@@ -1,28 +1,28 @@
-# FrostRoute 2인 협업 정책
+# FrostRoute N인 협업 정책
 
-> 버전: 1.0.0 | 작성일: 2026-07-31 | 상태: 승인
+> 버전: 1.1.0 | 작성일: 2026-08-01 | 상태: 승인
 
 ## 1. 협업 원칙
 
 - 한 작업에 한 명의 주 담당자 지정
 - 짧은 브랜치와 작은 Pull Request 사용
-- 공용 계약 변경 전 상대 개발자 공유
+- 공용 계약 변경 전 관련 개발자 공유
 - AI 생성 코드에 대한 작성자 책임 유지
 - 설계 변경과 구현 변경의 분리
 - 자동화보다 명시적인 작업 범위와 리뷰 우선
 
 ## 2. 기본 담당 영역
 
-| 영역                 | 기본 담당        |
-| -------------------- | ---------------- |
-| `apps/simulator`     | 개발자 A         |
-| `apps/ingestor`      | 개발자 A         |
-| `apps/api`           | 개발자 B         |
-| `apps/web`           | 개발자 B         |
-| `packages/contracts` | 공동 검토        |
-| `packages/database`  | 공동 검토        |
-| `infrastructure`     | 작업별 담당 지정 |
-| `docs`               | 기능 담당자      |
+| 영역                 | 기본 담당             |
+| -------------------- | --------------------- |
+| `apps/simulator`     | Issue별 담당자        |
+| `apps/ingestor`      | Issue별 담당자        |
+| `apps/api`           | Issue별 담당자        |
+| `apps/web`           | Issue별 담당자        |
+| `packages/contracts` | 영향 개발자 공동 검토 |
+| `packages/database`  | 영향 개발자 공동 검토 |
+| `infrastructure`     | 작업별 담당 지정      |
+| `docs`               | 기능 담당자           |
 
 기본 담당은 독점 소유권이 아니다. 다른 영역 수정 시 해당 영역 담당자의 리뷰를
 받는다.
@@ -86,14 +86,23 @@ Allow merge commits       OFF
 Allow squash merging      OFF
 Allow rebase merging      ON
 Require pull request      ON
-Required approvals        1
+Required approvals        단계별 적용
 Require status checks     ON
 Require branch up to date ON
 ```
 
+| 개발 단계          | 필수 승인 | 마지막 push 별도 승인 | 병합 조건                  |
+| ------------------ | --------- | --------------------- | -------------------------- |
+| 단독 scaffold      | 0명       | 비활성화              | 작성자 자체 검토와 CI 통과 |
+| N인 협업 시작 이후 | 1명 이상  | 활성화                | 다른 개발자 승인과 CI 통과 |
+
+협업 참여자가 생기는 Issue부터 저장소 관리자가 승인 정책을 강화한다. 인원수와 관계없이
+PR 생성, 필수 CI, 최신 `main` 반영, 대화 해결과 Rebase merge 원칙은 유지한다.
+
 ## 5. Pull Request
 
-모든 기능 변경은 상대 개발자의 리뷰를 거친다.
+모든 기능 변경은 Pull Request를 거친다. 단독 scaffold 단계에서는 작성자가 diff와 검증
+결과를 자체 검토하고, N인 협업 시작 이후에는 다른 개발자의 승인을 받는다.
 
 PR 본문:
 
@@ -181,7 +190,7 @@ PR 본문:
 - 사람이 Issue와 작업 범위 결정
 - Codex의 합의 범위 내 구현
 - 사람이 생성 diff와 실행 결과 확인
-- 상대 개발자의 Pull Request 리뷰
+- 단계에 따른 자체 검토 또는 다른 개발자의 Pull Request 리뷰
 - “Codex 생성 코드”를 리뷰 면제 사유로 사용 금지
 - PR 작성자의 구조·실패 동작·테스트 범위 설명 책임
 - 승인 설계 변경 필요 시 구현 중지 후 문서 갱신과 공동 확인
@@ -217,7 +226,7 @@ Codex 요청에 가능한 다음 경계를 포함한다.
 - 계약·migration·환경 변수 문서 반영
 - credential 비노출 확인
 - 로컬 실행 확인
-- 상대 개발자 리뷰 완료
+- 현재 개발 단계에 필요한 리뷰 완료
 - `main` 병합 후 기본 동작 확인
 
 ## 12. 갈등 해결
@@ -232,7 +241,7 @@ Codex 요청에 가능한 다음 경계를 포함한다.
 
 - 본인 담당 파일 충돌의 우선 해결
 - 공용 계약과 DB migration 충돌의 단독 판단 금지
-- 충돌 해결 후 상대 개발자에게 영향 공유
+- 충돌 해결 후 관련 개발자에게 영향 공유
 - migration 번호 충돌 시 신규 번호 부여
 - lockfile 충돌 시 수동 병합보다 `pnpm install` 재생성
 - 충돌 해결 후 영향 범위의 lint, typecheck, test 재실행
@@ -245,7 +254,7 @@ Rebase 병합 후 각 커밋이 `main` 이력에 남으므로 다음 원칙을 �
 - `작업 중`, `수정`, `최종` 같은 임시 제목 금지
 - 병합 전 불필요한 WIP 커밋 정리
 - 커밋 재작성은 본인 feature branch에서만 수행
-- 상대 개발자가 기반으로 사용 중인 커밋의 재작성 금지
+- 다른 개발자가 기반으로 사용 중인 커밋의 재작성 금지
 
 ## 15. 문서 버전
 
