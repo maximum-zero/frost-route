@@ -88,6 +88,6 @@ frost-route/
 - [기능 계획](docs/01-plan/features/cold-chain-fleet-monitoring.plan.md)
 - [기술 설계 색인](docs/02-design/features/cold-chain-fleet-monitoring.design.md)
 - [개발 컨벤션](docs/01-plan/convention.md)
-- [2인 협업 정책](docs/01-plan/team-workflow.md)
+- [N인 협업 정책](docs/01-plan/team-workflow.md)
 - [로컬 개발 환경](docs/development/local-setup.md)
 - [macOS·Windows Git 설정](docs/development/git-setup.md)
