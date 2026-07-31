@@ -1,0 +1,38 @@
+# Local bkit/Codex installation
+.bkit-codex/
+.agents/
+.codex/
+
+# Dependencies and build outputs
+node_modules/
+.pnpm-store/
+.next/
+dist/
+coverage/
+.turbo/
+*.tsbuildinfo
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Logs and temporary files
+*.log
+*.tmp
+.DS_Store
+
+# Terraform local state and caches
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# IDE
+.idea/
+.vscode/

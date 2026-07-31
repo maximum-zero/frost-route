@@ -1,0 +1,93 @@
+{
+  "version": "2.0",
+  "lastUpdated": "2026-07-31T05:28:46.724Z",
+  "activeFeatures": [
+    "cold-chain-fleet-monitoring"
+  ],
+  "primaryFeature": "cold-chain-fleet-monitoring",
+  "features": {
+    "cold-chain-fleet-monitoring": {
+      "phase": "do",
+      "matchRate": null,
+      "iterationCount": 0,
+      "documents": {},
+      "taskChain": [
+        {
+          "phase": "plan",
+          "status": "completed",
+          "createdAt": "2026-07-31T04:59:23.587Z",
+          "completedAt": "2026-07-31T05:01:10.846Z"
+        },
+        {
+          "phase": "design",
+          "status": "completed",
+          "createdAt": "2026-07-31T04:59:23.587Z",
+          "completedAt": "2026-07-31T05:28:46.724Z"
+        },
+        {
+          "phase": "do",
+          "status": "active",
+          "createdAt": "2026-07-31T04:59:23.587Z"
+        },
+        {
+          "phase": "check",
+          "status": "pending",
+          "createdAt": "2026-07-31T04:59:23.587Z"
+        },
+        {
+          "phase": "report",
+          "status": "pending",
+          "createdAt": "2026-07-31T04:59:23.587Z"
+        }
+      ],
+      "timestamps": {
+        "started": "2026-07-31T04:59:23.588Z",
+        "lastUpdated": "2026-07-31T05:28:46.724Z"
+      }
+    }
+  },
+  "pipeline": {
+    "currentPhase": 1,
+    "level": "Dynamic",
+    "phaseHistory": []
+  },
+  "session": {
+    "startedAt": "2026-07-31T04:59:23.584Z",
+    "onboardingCompleted": false,
+    "lastActivity": "2026-07-31T05:28:46.724Z"
+  },
+  "history": [
+    {
+      "feature": "cold-chain-fleet-monitoring",
+      "from": "plan",
+      "to": "design",
+      "timestamp": "2026-07-31T05:01:10.843Z"
+    },
+    {
+      "feature": "cold-chain-fleet-monitoring",
+      "action": "phase_complete",
+      "phase": "plan",
+      "nextPhase": "design",
+      "timestamp": "2026-07-31T05:01:10.844Z"
+    },
+    {
+      "feature": "cold-chain-fleet-monitoring",
+      "from": "design",
+      "to": "design",
+      "timestamp": "2026-07-31T05:26:11.595Z"
+    },
+    {
+      "feature": "cold-chain-fleet-monitoring",
+      "from": "design",
+      "to": "do",
+      "timestamp": "2026-07-31T05:28:46.723Z"
+    },
+    {
+      "feature": "cold-chain-fleet-monitoring",
+      "action": "phase_complete",
+      "phase": "design",
+      "nextPhase": "do",
+      "timestamp": "2026-07-31T05:28:46.723Z"
+    }
+  ]
+}
