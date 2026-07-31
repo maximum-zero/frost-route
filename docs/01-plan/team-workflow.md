@@ -13,16 +13,16 @@
 
 ## 2. 기본 담당 영역
 
-| 영역 | 기본 담당 |
-|---|---|
-| `apps/simulator` | 개발자 A |
-| `apps/ingestor` | 개발자 A |
-| `apps/api` | 개발자 B |
-| `apps/web` | 개발자 B |
-| `packages/contracts` | 공동 검토 |
-| `packages/database` | 공동 검토 |
-| `infrastructure` | 작업별 담당 지정 |
-| `docs` | 기능 담당자 |
+| 영역                 | 기본 담당        |
+| -------------------- | ---------------- |
+| `apps/simulator`     | 개발자 A         |
+| `apps/ingestor`      | 개발자 A         |
+| `apps/api`           | 개발자 B         |
+| `apps/web`           | 개발자 B         |
+| `packages/contracts` | 공동 검토        |
+| `packages/database`  | 공동 검토        |
+| `infrastructure`     | 작업별 담당 지정 |
+| `docs`               | 기능 담당자      |
 
 기본 담당은 독점 소유권이 아니다. 다른 영역 수정 시 해당 영역 담당자의 리뷰를
 받는다.
@@ -105,6 +105,7 @@ PR 본문:
 ## 검증 결과
 
 ## 계약 변경
+
 - MQTT:
 - HTTP API:
 - DB:

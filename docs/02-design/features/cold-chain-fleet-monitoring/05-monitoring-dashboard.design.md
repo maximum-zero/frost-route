@@ -18,12 +18,12 @@
 호출한다. 로컬은 Next.js rewrite, 배포 환경은 reverse proxy가 NestJS API로
 전달한다.
 
-| 메서드 | 경로 | 기능 |
-|---|---|---|
-| `GET` | `/api/v1/monitoring/summary` | 상태별 차량 수 |
-| `GET` | `/api/v1/monitoring/vehicles` | 차량별 최신 상태 |
-| `GET` | `/api/v1/vehicles/:vehicleId/telemetry` | 시간 범위 이력 |
-| `GET` | `/api/v1/vehicles/:vehicleId/telemetry/stats` | 온도·속도 집계 |
+| 메서드 | 경로                                          | 기능             |
+| ------ | --------------------------------------------- | ---------------- |
+| `GET`  | `/api/v1/monitoring/summary`                  | 상태별 차량 수   |
+| `GET`  | `/api/v1/monitoring/vehicles`                 | 차량별 최신 상태 |
+| `GET`  | `/api/v1/vehicles/:vehicleId/telemetry`       | 시간 범위 이력   |
+| `GET`  | `/api/v1/vehicles/:vehicleId/telemetry/stats` | 온도·속도 집계   |
 
 telemetry query:
 
@@ -62,13 +62,13 @@ limit: 1~5000, 기본 1000
 
 ## 4. 웹 경로
 
-| 경로 | 기능 |
-|---|---|
-| `/login` | 관리자 로그인 |
-| `/dashboard` | 요약 카드, 상태 filter, 차량 관제 목록·지도 |
-| `/vehicles` | 차량 목록, 등록, 수정 |
-| `/vehicles/[vehicleId]` | 최신 상태, 그래프, 경로, 이벤트 |
-| `/events` | 이상 이벤트 목록과 확인 |
+| 경로                    | 기능                                        |
+| ----------------------- | ------------------------------------------- |
+| `/login`                | 관리자 로그인                               |
+| `/dashboard`            | 요약 카드, 상태 filter, 차량 관제 목록·지도 |
+| `/vehicles`             | 차량 목록, 등록, 수정                       |
+| `/vehicles/[vehicleId]` | 최신 상태, 그래프, 경로, 이벤트             |
+| `/events`               | 이상 이벤트 목록과 확인                     |
 
 차량 상세 구성:
 

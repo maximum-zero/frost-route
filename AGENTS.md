@@ -40,18 +40,18 @@
 
 ### 작업별 필수 참조
 
-| 작업 | 추가 확인 문서 |
-|---|---|
-| 신규 기능 | 해당 기능의 Plan, Design 색인, 담당 기능 Design |
-| 공통 구조 변경 | `cold-chain-fleet-monitoring/00-common.design.md` |
-| 에뮬레이터 변경 | `01-vehicle-simulator.design.md` |
-| MQTT·수집 변경 | `02-telemetry-ingestion.design.md`, 협업 정책의 공용 계약 변경 |
-| 차량 관리 변경 | `03-vehicle-management.design.md` |
-| 이벤트 변경 | `04-event-monitoring.design.md` |
-| 관제 UI·지도 변경 | `05-monitoring-dashboard.design.md` |
-| Terraform·Docker 변경 | `06-deployment.design.md`, `docs/development/git-setup.md` |
-| 관리자 인증·세션 변경 | `07-admin-authentication.design.md` |
-| Git·PR 작업 | 개발 컨벤션, 협업 정책, `docs/development/git-setup.md` |
+| 작업                  | 추가 확인 문서                                                 |
+| --------------------- | -------------------------------------------------------------- |
+| 신규 기능             | 해당 기능의 Plan, Design 색인, 담당 기능 Design                |
+| 공통 구조 변경        | `cold-chain-fleet-monitoring/00-common.design.md`              |
+| 에뮬레이터 변경       | `01-vehicle-simulator.design.md`                               |
+| MQTT·수집 변경        | `02-telemetry-ingestion.design.md`, 협업 정책의 공용 계약 변경 |
+| 차량 관리 변경        | `03-vehicle-management.design.md`                              |
+| 이벤트 변경           | `04-event-monitoring.design.md`                                |
+| 관제 UI·지도 변경     | `05-monitoring-dashboard.design.md`                            |
+| Terraform·Docker 변경 | `06-deployment.design.md`, `docs/development/git-setup.md`     |
+| 관리자 인증·세션 변경 | `07-admin-authentication.design.md`                            |
+| Git·PR 작업           | 개발 컨벤션, 협업 정책, `docs/development/git-setup.md`        |
 
 ## 3. bkit 프로젝트 수준
 

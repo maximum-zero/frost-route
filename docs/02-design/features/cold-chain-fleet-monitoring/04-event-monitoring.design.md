@@ -46,20 +46,20 @@ ONLINE / RESOLVED EVENT
 
 ## 4. `monitoring_events`
 
-| 컬럼 | 타입 | 제약 |
-|---|---|---|
-| `id` | uuid | PK |
-| `vehicle_id` | uuid | FK, NOT NULL |
-| `type` | varchar(32) | TEMPERATURE·COMMUNICATION |
-| `status` | varchar(16) | ACTIVE·RESOLVED |
-| `severity` | varchar(16) | WARNING·CRITICAL |
-| `started_at` | timestamptz | NOT NULL |
-| `resolved_at` | timestamptz | NULL |
-| `acknowledged_at` | timestamptz | NULL |
-| `acknowledged_by` | uuid | `admins.id` FK, NULL |
-| `details` | jsonb | NOT NULL |
-| `created_at` | timestamptz | NOT NULL |
-| `updated_at` | timestamptz | NOT NULL |
+| 컬럼              | 타입        | 제약                      |
+| ----------------- | ----------- | ------------------------- |
+| `id`              | uuid        | PK                        |
+| `vehicle_id`      | uuid        | FK, NOT NULL              |
+| `type`            | varchar(32) | TEMPERATURE·COMMUNICATION |
+| `status`          | varchar(16) | ACTIVE·RESOLVED           |
+| `severity`        | varchar(16) | WARNING·CRITICAL          |
+| `started_at`      | timestamptz | NOT NULL                  |
+| `resolved_at`     | timestamptz | NULL                      |
+| `acknowledged_at` | timestamptz | NULL                      |
+| `acknowledged_by` | uuid        | `admins.id` FK, NULL      |
+| `details`         | jsonb       | NOT NULL                  |
+| `created_at`      | timestamptz | NOT NULL                  |
+| `updated_at`      | timestamptz | NOT NULL                  |
 
 partial unique index:
 
@@ -74,11 +74,11 @@ partial unique index:
 
 ## 5. API
 
-| 메서드 | 경로 | 기능 |
-|---|---|---|
-| `GET` | `/api/v1/events` | 이벤트 목록 |
-| `GET` | `/api/v1/events/:eventId` | 이벤트 상세 |
-| `POST` | `/api/v1/events/:eventId/acknowledge` | 확인 처리 |
+| 메서드 | 경로                                  | 기능        |
+| ------ | ------------------------------------- | ----------- |
+| `GET`  | `/api/v1/events`                      | 이벤트 목록 |
+| `GET`  | `/api/v1/events/:eventId`             | 이벤트 상세 |
+| `POST` | `/api/v1/events/:eventId/acknowledge` | 확인 처리   |
 
 목록 filter:
 

@@ -56,17 +56,17 @@ packages/* -> apps/*
 
 ## 5. 이름 규칙
 
-| 대상 | 규칙 | 예시 |
-|---|---|---|
-| 디렉터리·파일 | kebab-case | `vehicle-latest-state.ts` |
-| React 컴포넌트 | PascalCase export | `FleetMap` |
-| 변수·함수 | camelCase | `receivedAt`, `storeTelemetry` |
-| boolean | is/has/can/should 접두사 | `isActive`, `hasConnection` |
-| 상수 | UPPER_SNAKE_CASE | `MAX_PAYLOAD_BYTES` |
-| interface·type | PascalCase | `TelemetryMessage` |
+| 대상            | 규칙                      | 예시                               |
+| --------------- | ------------------------- | ---------------------------------- |
+| 디렉터리·파일   | kebab-case                | `vehicle-latest-state.ts`          |
+| React 컴포넌트  | PascalCase export         | `FleetMap`                         |
+| 변수·함수       | camelCase                 | `receivedAt`, `storeTelemetry`     |
+| boolean         | is/has/can/should 접두사  | `isActive`, `hasConnection`        |
+| 상수            | UPPER_SNAKE_CASE          | `MAX_PAYLOAD_BYTES`                |
+| interface·type  | PascalCase                | `TelemetryMessage`                 |
 | SQL 테이블·컬럼 | snake_case, 복수형 테이블 | `vehicle_telemetry`, `received_at` |
-| API path | kebab-case 명사 | `/monitoring/vehicles` |
-| MQTT topic | 소문자 고정 segment | `fleet/VH-001/telemetry` |
+| API path        | kebab-case 명사           | `/monitoring/vehicles`             |
+| MQTT topic      | 소문자 고정 segment       | `fleet/VH-001/telemetry`           |
 
 - 함수 이름의 동사 사용
 - 이벤트 처리 함수의 `handle*` 접두사 사용

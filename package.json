@@ -1,0 +1,39 @@
+{
+  "name": "frost-route",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MQTT와 TimescaleDB 기반 콜드체인 차량 관제 프로젝트",
+  "packageManager": "pnpm@11.15.1",
+  "engines": {
+    "node": ">=24.18.0 <25",
+    "pnpm": "11.15.1"
+  },
+  "scripts": {
+    "build": "pnpm -r --if-present build",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "prepare": "husky",
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "tsc --noEmit -p tsconfig.json && pnpm -r --if-present typecheck"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,cjs}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": "prettier --write",
+    "*.tf": "terraform fmt"
+  },
+  "devDependencies": {
+    "@eslint/js": "catalog:",
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "husky": "catalog:",
+    "lint-staged": "catalog:",
+    "prettier": "catalog:",
+    "typescript": "catalog:",
+    "typescript-eslint": "catalog:",
+    "vitest": "catalog:"
+  }
+}

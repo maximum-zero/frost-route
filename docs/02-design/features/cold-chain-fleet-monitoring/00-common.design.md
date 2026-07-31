@@ -15,21 +15,21 @@
 
 ## 2. 기술 결정
 
-| 영역 | 선택 | 이유 |
-|---|---|---|
-| 언어 | TypeScript | 앱과 공용 계약의 타입 공유 |
-| 작업 공간 | pnpm workspace | 가벼운 모노레포 관리 |
-| 웹 | Next.js App Router | 관제 화면 구현 |
-| API | NestJS, 기본 Express adapter | module·DI·Guard 기반의 일관된 서버 구조 |
-| MQTT | MQTT.js, Mosquitto | MQTT v5/QoS 1 검증 |
-| 데이터베이스 | TimescaleDB/PostgreSQL | 업무 데이터와 시계열 통합 |
-| SQL 접근 | Drizzle ORM, node-postgres driver | Drizzle 기본 접근과 Timescale 전용 SQL 지원 |
-| 검증 | Zod | MQTT, HTTP, 환경 변수 경계 검증 |
-| 차트 | Recharts | 온도·속도 시계열 표시 |
-| 지도 | NAVER Maps Web Dynamic Map | 국내 차량 위치와 경로 표시 |
-| 로컬 인프라 | Docker Compose | 재현 가능한 브로커·DB 실행 |
-| 클라우드 IaC | Terraform | 단일 VM과 데이터 볼륨 구성 |
-| 테스트 | Vitest, Testcontainers | 단위·통합 테스트 분리 |
+| 영역         | 선택                              | 이유                                        |
+| ------------ | --------------------------------- | ------------------------------------------- |
+| 언어         | TypeScript                        | 앱과 공용 계약의 타입 공유                  |
+| 작업 공간    | pnpm workspace                    | 가벼운 모노레포 관리                        |
+| 웹           | Next.js App Router                | 관제 화면 구현                              |
+| API          | NestJS, 기본 Express adapter      | module·DI·Guard 기반의 일관된 서버 구조     |
+| MQTT         | MQTT.js, Mosquitto                | MQTT v5/QoS 1 검증                          |
+| 데이터베이스 | TimescaleDB/PostgreSQL            | 업무 데이터와 시계열 통합                   |
+| SQL 접근     | Drizzle ORM, node-postgres driver | Drizzle 기본 접근과 Timescale 전용 SQL 지원 |
+| 검증         | Zod                               | MQTT, HTTP, 환경 변수 경계 검증             |
+| 차트         | Recharts                          | 온도·속도 시계열 표시                       |
+| 지도         | NAVER Maps Web Dynamic Map        | 국내 차량 위치와 경로 표시                  |
+| 로컬 인프라  | Docker Compose                    | 재현 가능한 브로커·DB 실행                  |
+| 클라우드 IaC | Terraform                         | 단일 VM과 데이터 볼륨 구성                  |
+| 테스트       | Vitest, Testcontainers            | 단위·통합 테스트 분리                       |
 
 MQTT 브로커와 TimescaleDB의 직접 연동이 핵심 학습 범위다.
 
@@ -54,15 +54,15 @@ SSE, WebSocket 중 검증된 방식을 사용하며 설계 단계에서 특정 �
 
 ## 4. 서비스 연결
 
-| 출발 | 도착 | 방식 | 계약 |
-|---|---|---|---|
-| Simulator | Mosquitto | MQTT v5/QoS 1 | telemetry topic과 Zod schema |
-| Mosquitto | Ingestor | MQTT v5/QoS 1 | `fleet/+/telemetry` |
-| Ingestor | TimescaleDB | PostgreSQL | migration schema |
-| API | TimescaleDB | PostgreSQL | repository와 schema |
-| Browser | Reverse Proxy | same-origin HTTPS | `/`, `/api/v1` |
-| Reverse Proxy | Web·API | HTTP | path routing |
-| Browser | API | proxy 경유 HTTP/JSON | 상대 `/api/v1` DTO |
+| 출발          | 도착          | 방식                 | 계약                         |
+| ------------- | ------------- | -------------------- | ---------------------------- |
+| Simulator     | Mosquitto     | MQTT v5/QoS 1        | telemetry topic과 Zod schema |
+| Mosquitto     | Ingestor      | MQTT v5/QoS 1        | `fleet/+/telemetry`          |
+| Ingestor      | TimescaleDB   | PostgreSQL           | migration schema             |
+| API           | TimescaleDB   | PostgreSQL           | repository와 schema          |
+| Browser       | Reverse Proxy | same-origin HTTPS    | `/`, `/api/v1`               |
+| Reverse Proxy | Web·API       | HTTP                 | path routing                 |
+| Browser       | API           | proxy 경유 HTTP/JSON | 상대 `/api/v1` DTO           |
 
 같은 모노레포에 있다는 이유로 `apps/*` 사이의 직접 import를 허용하지 않는다.
 

@@ -70,13 +70,13 @@ Terraform 변수와 ADR에 기록한다.
 
 ## 4. 네트워크
 
-| 포트 | 용도 | 정책 |
-|---:|---|---|
-| 22 | SSH | 개발자 허용 IP만 |
-| 80·443 | Web·API | 외부 공개 |
-| 8883 | MQTT TLS | 필요한 client만 |
-| 1883 | MQTT plain | 외부 비공개 |
-| 5432 | PostgreSQL | 외부 비공개 |
+|   포트 | 용도       | 정책             |
+| -----: | ---------- | ---------------- |
+|     22 | SSH        | 개발자 허용 IP만 |
+| 80·443 | Web·API    | 외부 공개        |
+|   8883 | MQTT TLS   | 필요한 client만  |
+|   1883 | MQTT plain | 외부 비공개      |
+|   5432 | PostgreSQL | 외부 비공개      |
 
 외부 배포에서는 Caddy 또는 동등한 reverse proxy로 HTTPS를 종료한다.
 운영 환경의 관리자 세션 쿠키는 HTTPS에서만 전달한다.
