@@ -32,6 +32,9 @@ jobs:
       - name: 의존성 설치
         run: pnpm install --frozen-lockfile
 
+      - name: Docker Compose 설정 검사
+        run: pnpm infra:config
+
       - name: 형식 검사
         run: pnpm format:check
 
