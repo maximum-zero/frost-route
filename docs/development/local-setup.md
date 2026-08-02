@@ -1,6 +1,6 @@
 # FrostRoute 로컬 개발 환경
 
-> 버전: 1.0.0 | 작성일: 2026-08-01 | 상태: 초안
+> 버전: 1.1.0 | 작성일: 2026-08-01 | 상태: 승인
 
 이 문서는 프로젝트 참여자가 로컬 workspace를 동일하게 준비하고 공통 검증 명령을 실행하는
 방법을 설명한다. 애플리케이션별 실행 방법은 해당 기능 구현 후 별도 문서에 추가한다.
@@ -54,6 +54,32 @@ pnpm install --frozen-lockfile
 의존성을 변경하려는 작업이 아니라면 lockfile을 수정하지 않는다.
 
 ## 4. 공통 검증
+
+루트 `.env.example`을 참고해 `.env`를 생성하고 로컬 비밀번호를 설정한다. `.env`는
+Git에서 제외되며 공유하지 않는다. macOS·Linux는 다음 명령을 사용할 수 있다.
+
+```bash
+cp .env.example .env
+```
+
+Windows PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+로컬 MQTT·데이터베이스 실행:
+
+```bash
+pnpm infra:config
+pnpm infra:up
+pnpm infra:ps
+```
+
+연결 검증과 종료 방법은 [로컬 Docker 인프라](../../infrastructure/docker/README.md)를
+따른다.
+
+공통 품질 검증:
 
 ```bash
 pnpm format:check
