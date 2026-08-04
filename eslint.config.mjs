@@ -10,7 +10,7 @@ export default tseslint.config(
       '.next/**',
       '.turbo/**',
       'coverage/**',
-      'dist/**',
+      '**/dist/**',
       'node_modules/**',
     ],
   },
