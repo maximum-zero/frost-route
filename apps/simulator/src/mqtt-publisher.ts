@@ -54,8 +54,15 @@ export async function runMqttPublisher(
     routeDistribution: countRoutes(runtimes),
   });
 
+  let previousTickAt = performance.now() - config.intervalMs;
+  let nextTickAt = performance.now();
+
   try {
     while (!signal.aborted) {
+      const tickAt = performance.now();
+      const elapsedMs = tickAt - previousTickAt;
+      previousTickAt = tickAt;
+      nextTickAt += config.intervalMs;
       const recordedAt = new Date();
 
       await Promise.all(
@@ -64,7 +71,7 @@ export async function runMqttPublisher(
             runtime.state,
             recordedAt,
             runtime.random,
-            config.intervalMs,
+            elapsedMs,
           );
           await runtime.client.publishAsync(
             createTelemetryTopic(message.vehicleId),
@@ -83,7 +90,9 @@ export async function runMqttPublisher(
         firstSequence: runtimes[0]?.state.sequence,
       });
 
-      await delay(config.intervalMs, undefined, { signal });
+      await delay(calculateRemainingDelayMs(nextTickAt, performance.now()), undefined, {
+        signal,
+      });
     }
   } catch (error: unknown) {
     if (!signal.aborted) {
@@ -93,6 +102,15 @@ export async function runMqttPublisher(
     await closeClients(runtimes);
     log('simulator_stopped', { vehicleCount: runtimes.length });
   }
+}
+
+/** 고정 tick 기준에서 처리 시간을 제외한 다음 대기 시간을 계산한다. */
+export function calculateRemainingDelayMs(nextTickAt: number, currentTime: number): number {
+  if (!Number.isFinite(nextTickAt) || !Number.isFinite(currentTime)) {
+    throw new TypeError('tick 시간은 유한한 숫자여야 합니다.');
+  }
+
+  return Math.max(0, nextTickAt - currentTime);
 }
 
 /** 연결된 모든 MQTT client의 종료를 각각 끝까지 시도한다. */

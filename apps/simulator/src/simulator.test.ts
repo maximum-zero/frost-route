@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { parseSimulatorConfig } from './config.js';
 import { createDeterministicRandom } from './deterministic-random.js';
+import { calculateRemainingDelayMs } from './mqtt-publisher.js';
 import {
   calculateDistanceMeters,
   getRouteById,
@@ -51,6 +52,20 @@ describe('재현 가능한 난수', () => {
     const second = createDeterministicRandom(42);
 
     expect([first(), first(), first()]).toEqual([second(), second(), second()]);
+  });
+});
+
+describe('발행 tick', () => {
+  it('처리 시간을 제외한 남은 시간만 기다린다', () => {
+    expect(calculateRemainingDelayMs(1_000, 250)).toBe(750);
+  });
+
+  it('처리가 tick을 초과하면 추가로 기다리지 않는다', () => {
+    expect(calculateRemainingDelayMs(1_000, 1_250)).toBe(0);
+  });
+
+  it('유한하지 않은 tick 시간을 거부한다', () => {
+    expect(() => calculateRemainingDelayMs(Number.POSITIVE_INFINITY, 0)).toThrow();
   });
 });
 
