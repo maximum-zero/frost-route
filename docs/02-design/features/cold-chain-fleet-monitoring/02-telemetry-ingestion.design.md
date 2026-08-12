@@ -1,6 +1,6 @@
 # 텔레메트리 수집 설계
 
-> 버전: 1.0.0 | 작성일: 2026-07-31 | 상태: 승인
+> 버전: 1.1.0 | 작성일: 2026-07-31 | 상태: 승인
 > 관련 요구사항: FR-02~FR-06
 > 문서 순서: 02 | 공통 기준: [공통 설계](00-common.design.md)
 
@@ -135,6 +135,7 @@ TimescaleDB hypertable의 unique index는 partition time인 `recorded_at`을 포
 | `sequence`              | bigint           | 최신 sequence                |
 | `latitude`, `longitude` | double precision | 최신 위치                    |
 | `speed_kph`             | numeric(6,2)     | 최신 속도                    |
+| `heading`               | numeric(6,2)     | 최신 진행 방향               |
 | `temperature_c`         | numeric(5,2)     | 최신 온도                    |
 | `door_open`             | boolean          | 문 상태                      |
 | `connection_status`     | varchar(16)      | ONLINE·OFFLINE               |
