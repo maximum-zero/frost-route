@@ -1,6 +1,6 @@
 # 콜드체인 차량 관제 - 공통 설계
 
-> 버전: 1.0.0 | 작성일: 2026-07-31 | 상태: 승인
+> 버전: 1.1.0 | 작성일: 2026-07-31 | 상태: 승인
 > 상위 색인: [설계 색인](../cold-chain-fleet-monitoring.design.md)
 > 문서 순서: 00
 
@@ -143,6 +143,8 @@ SESSION_IDLE_TIMEOUT_MINUTES=30
 SESSION_ABSOLUTE_TIMEOUT_HOURS=12
 SIMULATOR_VEHICLE_COUNT=100
 SIMULATOR_INTERVAL_MS=1000
+SIMULATOR_ROUTE_PROFILE=mixed
+SIMULATOR_ROUTE_ID=
 ```
 
 - `.env.example`만 커밋

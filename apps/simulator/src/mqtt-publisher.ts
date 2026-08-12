@@ -23,7 +23,7 @@ export async function runMqttPublisher(
   try {
     await Promise.all(
       Array.from({ length: config.vehicleCount }, async (_, index) => {
-        const state = createVehicleState(index + 1);
+        const state = createVehicleState(index + 1, config.randomSeed, config.routeId);
         const options: IClientOptions = {
           clean: true,
           clientId: `frost-route-${state.vehicleId}-${state.sessionId.slice(0, 8)}`,
@@ -47,7 +47,12 @@ export async function runMqttPublisher(
     throw error;
   }
 
-  log('simulator_started', { vehicleCount: runtimes.length, intervalMs: config.intervalMs });
+  log('simulator_started', {
+    vehicleCount: runtimes.length,
+    intervalMs: config.intervalMs,
+    routeProfile: config.routeProfile,
+    routeDistribution: countRoutes(runtimes),
+  });
 
   try {
     while (!signal.aborted) {
@@ -59,6 +64,7 @@ export async function runMqttPublisher(
             runtime.state,
             recordedAt,
             runtime.random,
+            config.intervalMs,
           );
           await runtime.client.publishAsync(
             createTelemetryTopic(message.vehicleId),
@@ -105,4 +111,12 @@ function log(event: string, details: Record<string, unknown>): void {
       ...details,
     }),
   );
+}
+
+function countRoutes(runtimes: readonly VehicleRuntime[]): Record<string, number> {
+  const distribution: Record<string, number> = {};
+  for (const { state } of runtimes) {
+    distribution[state.routeId] = (distribution[state.routeId] ?? 0) + 1;
+  }
+  return distribution;
 }
