@@ -1,6 +1,6 @@
 # 차량 에뮬레이터 설계
 
-> 버전: 1.0.0 | 작성일: 2026-07-31 | 상태: 승인
+> 버전: 1.1.0 | 작성일: 2026-07-31 | 상태: 승인
 > 관련 요구사항: FR-01, FR-08
 > 문서 순서: 01 | 공통 기준: [공통 설계](00-common.design.md)
 
@@ -9,6 +9,9 @@
 - 설정된 차량 수만큼 가상 MQTT client 실행
 - 차량별 상태, `sessionId`, 증가하는 `sequence` 유지
 - 고정 경로 좌표 보간
+- 서울 도심, 수도권, 중부권, 장거리의 도로 기반 고정 경로 catalog
+- `vehicleId + random seed` hash와 경로 가중치에 따른 결정적 배정
+- 경로별 속도 범위와 실제 거리·경과 시간 기반 이동
 - 속도, 방향, 적재함 온도, 문 상태 생성
 - MQTT v5/QoS 1 telemetry publish
 - 정상·온도 상승·통신 단절·중복·지연 시나리오 실행
@@ -53,6 +56,10 @@ simulator start --scenario scenarios/reconnect-storm.json
 - DB에 등록되지 않은 차량 ID의 임의 생성 금지
 - 실제 도로 경로 API 미사용
 - 서울 지역의 고정된 샘플 경로 사용
+- 서울 도심 순환, 서울-인천, 서울-대전, 서울-부산 경로를 초기 catalog로 사용
+- 장거리 경로는 목적지에서 역방향으로 복귀해 좌표 순간이동 방지
+- `SIMULATOR_ROUTE_PROFILE=mixed`는 경로 가중치에 따라 배정
+- `SIMULATOR_ROUTE_ID`가 있으면 지도·통합 검증을 위해 특정 경로로 고정
 - 테스트 재현을 위한 random seed 설정 지원
 
 ## 6. 오류 처리
@@ -72,6 +79,9 @@ simulator start --scenario scenarios/reconnect-storm.json
 - 온도 상승·정상화
 - 문 열림 상태 전이
 - 고정 random seed 재현성
+- 가중치 기반 경로 배정과 특정 경로 override
+- 속도·발행 주기와 실제 이동 거리 일치
+- 순환 경계와 장거리 반환 경계의 위치 연속성
 
 ### 통합 테스트
 

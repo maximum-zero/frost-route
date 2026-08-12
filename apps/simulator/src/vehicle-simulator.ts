@@ -2,26 +2,42 @@ import { randomUUID } from 'node:crypto';
 
 import { telemetryMessageSchema, type TelemetryMessage } from '@frost-route/contracts';
 
-import { interpolateRoute } from './route.js';
+import {
+  getRouteById,
+  getRouteTravelLengthMeters,
+  hashToUnitInterval,
+  locateRoutePosition,
+  selectRouteForVehicle,
+} from './route.js';
 
 export interface VehicleSimulationState {
   vehicleId: string;
   sessionId: string;
   sequence: number;
-  routeProgress: number;
+  routeId: string;
+  distanceAlongRouteMeters: number;
 }
 
-/** 차량 번호에 대응하는 초기 session과 경로 위치를 만든다. */
-export function createVehicleState(vehicleNumber: number): VehicleSimulationState {
+/** 차량 번호에 대응하는 session, 경로와 분산된 초기 위치를 만든다. */
+export function createVehicleState(
+  vehicleNumber: number,
+  randomSeed = 20_260_804,
+  requestedRouteId?: string,
+): VehicleSimulationState {
   if (!Number.isInteger(vehicleNumber) || vehicleNumber < 1 || vehicleNumber > 100) {
     throw new RangeError('차량 번호는 1~100 사이 정수여야 합니다.');
   }
+  const vehicleId = `VH-${vehicleNumber.toString().padStart(3, '0')}`;
+  const route = selectRouteForVehicle(vehicleId, randomSeed, requestedRouteId);
 
   return {
-    vehicleId: `VH-${vehicleNumber.toString().padStart(3, '0')}`,
+    vehicleId,
     sessionId: randomUUID(),
     sequence: 0,
-    routeProgress: (vehicleNumber - 1) / 100,
+    routeId: route.id,
+    distanceAlongRouteMeters:
+      getRouteTravelLengthMeters(route) *
+      hashToUnitInterval(`${vehicleId}:${String(randomSeed)}:initial-position`),
   };
 }
 
@@ -30,9 +46,16 @@ export function createNextTelemetry(
   state: VehicleSimulationState,
   recordedAt: Date,
   random: () => number,
+  elapsedMs = 1_000,
 ): { message: TelemetryMessage; nextState: VehicleSimulationState } {
-  const position = interpolateRoute(state.routeProgress);
-  const speedKph = 35 + random() * 15;
+  if (!Number.isFinite(elapsedMs) || elapsedMs <= 0) {
+    throw new RangeError('경과 시간은 0보다 큰 유한한 숫자여야 합니다.');
+  }
+
+  const route = getRouteById(state.routeId);
+  const position = locateRoutePosition(route, state.distanceAlongRouteMeters);
+  const speedKph =
+    route.speedRangeKph.min + random() * (route.speedRangeKph.max - route.speedRangeKph.min);
   const temperatureC = -18.5 + random();
   const message = telemetryMessageSchema.parse({
     schemaVersion: 1,
@@ -52,13 +75,14 @@ export function createNextTelemetry(
       doorOpen: false,
     },
   });
+  const movedDistanceMeters = (speedKph / 3.6) * (elapsedMs / 1_000);
 
   return {
     message,
     nextState: {
       ...state,
       sequence: state.sequence + 1,
-      routeProgress: (state.routeProgress + 0.002 + random() * 0.001) % 1,
+      distanceAlongRouteMeters: state.distanceAlongRouteMeters + movedDistanceMeters,
     },
   };
 }
