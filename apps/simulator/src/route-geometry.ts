@@ -1,37 +1,6 @@
-import { z } from 'zod';
-
-import seoulBusanFixture from './route-fixtures/seoul-busan.json' with { type: 'json' };
-import seoulDaejeonFixture from './route-fixtures/seoul-daejeon.json' with { type: 'json' };
-import seoulIncheonFixture from './route-fixtures/seoul-incheon.json' with { type: 'json' };
-import seoulUrbanLoopFixture from './route-fixtures/seoul-urban-loop.json' with { type: 'json' };
+import type { Coordinate, RoutePosition, VehicleRoute } from './route-types.js';
 
 const EARTH_RADIUS_METERS = 6_371_008.8;
-
-export interface Coordinate {
-  latitude: number;
-  longitude: number;
-}
-
-export type RouteKind = 'LOOP' | 'OUT_AND_BACK';
-export type RouteCategory = 'URBAN' | 'METRO' | 'REGIONAL' | 'LONG_HAUL';
-
-export interface VehicleRoute {
-  id: string;
-  name: string;
-  category: RouteCategory;
-  kind: RouteKind;
-  selectionWeight: number;
-  speedRangeKph: {
-    min: number;
-    max: number;
-  };
-  source: string;
-  points: readonly Coordinate[];
-}
-
-export interface RoutePosition extends Coordinate {
-  heading: number;
-}
 
 interface RouteMetrics {
   cumulativeMeters: readonly number[];
@@ -39,83 +8,7 @@ interface RouteMetrics {
   travelLengthMeters: number;
 }
 
-const routeFixtureSchema = z.object({
-  id: z.string().min(1),
-  name: z.string().min(1),
-  category: z.enum(['URBAN', 'METRO', 'REGIONAL', 'LONG_HAUL']),
-  kind: z.enum(['LOOP', 'OUT_AND_BACK']),
-  selectionWeight: z.number().positive(),
-  speedRangeKph: z
-    .object({
-      min: z.number().nonnegative(),
-      max: z.number().max(200),
-    })
-    .refine(({ min, max }) => min < max, '경로의 최대 속도는 최소 속도보다 커야 합니다.'),
-  source: z.string().min(1),
-  points: z
-    .array(
-      z
-        .tuple([z.number().min(-90).max(90), z.number().min(-180).max(180)])
-        .transform(([latitude, longitude]) => ({ latitude, longitude })),
-    )
-    .min(2),
-});
-
-export const VEHICLE_ROUTES: readonly VehicleRoute[] = [
-  routeFixtureSchema.parse(seoulUrbanLoopFixture),
-  routeFixtureSchema.parse(seoulIncheonFixture),
-  routeFixtureSchema.parse(seoulDaejeonFixture),
-  routeFixtureSchema.parse(seoulBusanFixture),
-];
-
 const routeMetrics = new Map<string, RouteMetrics>();
-
-/** vehicle ID와 seed의 안정적인 hash를 경로 가중치에 적용한다. */
-export function selectRouteForVehicle(
-  vehicleId: string,
-  randomSeed: number,
-  requestedRouteId?: string,
-): VehicleRoute {
-  if (requestedRouteId !== undefined) {
-    return getRouteById(requestedRouteId);
-  }
-
-  const totalWeight = VEHICLE_ROUTES.reduce((total, route) => total + route.selectionWeight, 0);
-  let bucket = hashToUnitInterval(`${vehicleId}:${String(randomSeed)}:route`) * totalWeight;
-
-  for (const route of VEHICLE_ROUTES) {
-    bucket -= route.selectionWeight;
-    if (bucket < 0) {
-      return route;
-    }
-  }
-
-  const fallback = VEHICLE_ROUTES.at(-1);
-  if (fallback === undefined) {
-    throw new RangeError('차량에 배정할 경로가 없습니다.');
-  }
-  return fallback;
-}
-
-/** 문자열 hash를 동일 입력에서 재현 가능한 0 이상 1 미만 값으로 변환한다. */
-export function hashToUnitInterval(value: string): number {
-  let hash = 2_166_136_261;
-  for (let index = 0; index < value.length; index += 1) {
-    hash ^= value.charCodeAt(index);
-    hash = Math.imul(hash, 16_777_619);
-  }
-  return (hash >>> 0) / 4_294_967_296;
-}
-
-export function getRouteById(routeId: string): VehicleRoute {
-  const route = VEHICLE_ROUTES.find(({ id }) => id === routeId);
-
-  if (route === undefined) {
-    throw new RangeError(`알 수 없는 차량 경로입니다: ${routeId}`);
-  }
-
-  return route;
-}
 
 /** 경로의 편도 실제 거리를 meter 단위로 반환한다. */
 export function getRoutePathLengthMeters(route: VehicleRoute): number {
