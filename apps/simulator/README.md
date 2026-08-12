@@ -5,7 +5,7 @@
 
 ## 운행 경로
 
-- 기본 `mixed` profile은 `vehicleId + random seed` hash를 경로 가중치에 적용한다.
+- 기본 배정은 `vehicleId + random seed` hash를 경로 가중치에 적용한다.
 - 서울 도심 순환 50%, 서울-인천 20%, 서울-대전 20%, 서울-부산 10%
 - 서울 도심은 순환하고 나머지 경로는 목적지에서 같은 도로를 따라 복귀한다.
 - `SIMULATOR_ROUTE_ID`를 지정하면 모든 차량을 특정 경로에 고정할 수 있다.
@@ -37,7 +37,6 @@ MQTT_PASSWORD=
 SIMULATOR_VEHICLE_COUNT=1
 SIMULATOR_INTERVAL_MS=1000
 SIMULATOR_RANDOM_SEED=20260804
-SIMULATOR_ROUTE_PROFILE=mixed
 SIMULATOR_ROUTE_ID=
 ```
 
