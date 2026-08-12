@@ -1,10 +1,11 @@
 import { setTimeout as delay } from 'node:timers/promises';
 
 import { createTelemetryTopic } from '@frost-route/contracts';
-import { connectAsync, type IClientOptions, type MqttClient } from 'mqtt';
+import { connectAsync, type MqttClient } from 'mqtt';
 
 import type { SimulatorConfig } from './config.js';
 import { createDeterministicRandom } from './deterministic-random.js';
+import { createMqttClientOptions } from './mqtt-options.js';
 import { createNextTelemetry, createVehicleState } from './vehicle-simulator.js';
 
 interface VehicleRuntime {
@@ -24,15 +25,7 @@ export async function runMqttPublisher(
     await Promise.all(
       Array.from({ length: config.vehicleCount }, async (_, index) => {
         const state = createVehicleState(index + 1, config.randomSeed, config.routeId);
-        const options: IClientOptions = {
-          clean: true,
-          clientId: `frost-route-${state.vehicleId}-${state.sessionId.slice(0, 8)}`,
-          connectTimeout: 10_000,
-          protocolVersion: 5,
-          reconnectPeriod: 1_000,
-          ...(config.mqttUsername === undefined ? {} : { username: config.mqttUsername }),
-          ...(config.mqttPassword === undefined ? {} : { password: config.mqttPassword }),
-        };
+        const options = createMqttClientOptions(config, state);
         const client = await connectAsync(config.mqttUrl, options);
 
         runtimes.push({

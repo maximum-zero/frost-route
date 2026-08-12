@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { parseSimulatorConfig } from './config.js';
 import { createDeterministicRandom } from './deterministic-random.js';
+import { createMqttClientOptions } from './mqtt-options.js';
 import { calculateRemainingDelayMs } from './mqtt-publisher.js';
 import { getRouteById, VEHICLE_ROUTES } from './route-catalog.js';
 import {
@@ -85,6 +86,32 @@ describe('발행 tick', () => {
 
   it('유한하지 않은 tick 시간을 거부한다', () => {
     expect(() => calculateRemainingDelayMs(Number.POSITIVE_INFINITY, 0)).toThrow();
+  });
+});
+
+describe('MQTT 연결 옵션', () => {
+  const identity = {
+    vehicleId: 'VH-001',
+    sessionId: '12345678-1234-1234-1234-123456789012',
+  };
+
+  it('MQTT v5 재연결 정책과 차량별 client ID를 만든다', () => {
+    expect(createMqttClientOptions({}, identity)).toEqual({
+      clean: true,
+      clientId: 'frost-route-VH-001-12345678',
+      connectTimeout: 10_000,
+      protocolVersion: 5,
+      reconnectPeriod: 1_000,
+    });
+  });
+
+  it('설정된 credential만 연결 옵션에 전달한다', () => {
+    expect(
+      createMqttClientOptions(
+        { mqttUsername: 'simulator', mqttPassword: 'test-password' },
+        identity,
+      ),
+    ).toMatchObject({ username: 'simulator', password: 'test-password' });
   });
 });
 
