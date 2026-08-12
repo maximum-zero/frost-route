@@ -2,19 +2,17 @@ import { randomUUID } from 'node:crypto';
 
 import { telemetryMessageSchema, type TelemetryMessage } from '@frost-route/contracts';
 
-import {
-  getRouteById,
-  getRouteTravelLengthMeters,
-  hashToUnitInterval,
-  locateRoutePosition,
-  selectRouteForVehicle,
-} from './route.js';
+import { getRouteById } from './route-catalog.js';
+import { getRouteTravelLengthMeters, locateRoutePosition } from './route-geometry.js';
+import type { VehicleRouteId } from './route-ids.js';
+import { hashToUnitInterval, selectRouteForVehicle } from './route-selection.js';
+import { MAX_VEHICLE_NUMBER, MIN_VEHICLE_NUMBER } from './simulator-constants.js';
 
 export interface VehicleSimulationState {
   vehicleId: string;
   sessionId: string;
   sequence: number;
-  routeId: string;
+  routeId: VehicleRouteId;
   distanceAlongRouteMeters: number;
 }
 
@@ -22,10 +20,16 @@ export interface VehicleSimulationState {
 export function createVehicleState(
   vehicleNumber: number,
   randomSeed: number,
-  requestedRouteId?: string,
+  requestedRouteId?: VehicleRouteId,
 ): VehicleSimulationState {
-  if (!Number.isInteger(vehicleNumber) || vehicleNumber < 1 || vehicleNumber > 100) {
-    throw new RangeError('차량 번호는 1~100 사이 정수여야 합니다.');
+  if (
+    !Number.isInteger(vehicleNumber) ||
+    vehicleNumber < MIN_VEHICLE_NUMBER ||
+    vehicleNumber > MAX_VEHICLE_NUMBER
+  ) {
+    throw new RangeError(
+      `차량 번호는 ${String(MIN_VEHICLE_NUMBER)}~${String(MAX_VEHICLE_NUMBER)} 사이 정수여야 합니다.`,
+    );
   }
   const vehicleId = `VH-${vehicleNumber.toString().padStart(3, '0')}`;
   const route = selectRouteForVehicle(vehicleId, randomSeed, requestedRouteId);

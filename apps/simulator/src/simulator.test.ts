@@ -3,15 +3,14 @@ import { describe, expect, it } from 'vitest';
 import { parseSimulatorConfig } from './config.js';
 import { createDeterministicRandom } from './deterministic-random.js';
 import { calculateRemainingDelayMs } from './mqtt-publisher.js';
+import { getRouteById, VEHICLE_ROUTES } from './route-catalog.js';
 import {
   calculateDistanceMeters,
-  getRouteById,
   getRoutePathLengthMeters,
   getRouteTravelLengthMeters,
   locateRoutePosition,
-  selectRouteForVehicle,
-  VEHICLE_ROUTES,
-} from './route.js';
+} from './route-geometry.js';
+import { selectRouteForVehicle } from './route-selection.js';
 import { createNextTelemetry, createVehicleState } from './vehicle-simulator.js';
 
 const VALID_MQTT_ENVIRONMENT = { MQTT_URL: 'mqtt://localhost:1883' } as const;
