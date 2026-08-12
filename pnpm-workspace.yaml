@@ -4,11 +4,14 @@ packages:
 
 catalog:
   '@eslint/js': ^10.0.1
+  '@types/pg': ^8.21.0
+  drizzle-orm: ^0.45.2
   '@types/node': 24.13.3
   eslint: ^10.8.0
   husky: ^9.1.7
   lint-staged: ^17.2.0
   mqtt: ^5.15.2
+  pg: ^8.23.0
   prettier: ^3.9.6
   typescript: 6.0.3
   typescript-eslint: ^8.65.0
