@@ -1,6 +1,6 @@
 # 차량 에뮬레이터 설계
 
-> 버전: 1.1.0 | 작성일: 2026-07-31 | 상태: 승인
+> 버전: 1.2.0 | 작성일: 2026-07-31 | 상태: 승인
 > 관련 요구사항: FR-01, FR-08
 > 문서 순서: 01 | 공통 기준: [공통 설계](00-common.design.md)
 
@@ -58,7 +58,7 @@ simulator start --scenario scenarios/reconnect-storm.json
 - 서울 지역의 고정된 샘플 경로 사용
 - 서울 도심 순환, 서울-인천, 서울-대전, 서울-부산 경로를 초기 catalog로 사용
 - 장거리 경로는 목적지에서 역방향으로 복귀해 좌표 순간이동 방지
-- `SIMULATOR_ROUTE_PROFILE=mixed`는 경로 가중치에 따라 배정
+- `SIMULATOR_ROUTE_ID`가 없으면 경로 가중치에 따라 혼합 배정
 - `SIMULATOR_ROUTE_ID`가 있으면 지도·통합 검증을 위해 특정 경로로 고정
 - 테스트 재현을 위한 random seed 설정 지원
 

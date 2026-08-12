@@ -16,13 +16,12 @@ const mqttUrlSchema = z
 
 const simulatorConfigSchema = z
   .object({
-    MQTT_URL: mqttUrlSchema.default('mqtt://localhost:1883'),
+    MQTT_URL: mqttUrlSchema,
     MQTT_USERNAME: optionalCredentialSchema,
     MQTT_PASSWORD: optionalCredentialSchema,
     SIMULATOR_VEHICLE_COUNT: z.coerce.number().int().min(1).max(100).default(1),
     SIMULATOR_INTERVAL_MS: z.coerce.number().int().min(100).max(60_000).default(1_000),
     SIMULATOR_RANDOM_SEED: z.coerce.number().int().nonnegative().default(20_260_804),
-    SIMULATOR_ROUTE_PROFILE: z.literal('mixed').default('mixed'),
     SIMULATOR_ROUTE_ID: optionalCredentialSchema,
   })
   .superRefine((config, context) => {
@@ -52,7 +51,6 @@ export interface SimulatorConfig {
   vehicleCount: number;
   intervalMs: number;
   randomSeed: number;
-  routeProfile: 'mixed';
   routeId?: string;
 }
 
@@ -67,7 +65,6 @@ export function parseSimulatorConfig(environment: NodeJS.ProcessEnv): SimulatorC
     vehicleCount: parsed.SIMULATOR_VEHICLE_COUNT,
     intervalMs: parsed.SIMULATOR_INTERVAL_MS,
     randomSeed: parsed.SIMULATOR_RANDOM_SEED,
-    routeProfile: parsed.SIMULATOR_ROUTE_PROFILE,
     ...(parsed.SIMULATOR_ROUTE_ID === undefined ? {} : { routeId: parsed.SIMULATOR_ROUTE_ID }),
   };
 }

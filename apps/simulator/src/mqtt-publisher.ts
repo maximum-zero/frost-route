@@ -50,7 +50,6 @@ export async function runMqttPublisher(
   log('simulator_started', {
     vehicleCount: runtimes.length,
     intervalMs: config.intervalMs,
-    routeProfile: config.routeProfile,
     routeDistribution: countRoutes(runtimes),
   });
 

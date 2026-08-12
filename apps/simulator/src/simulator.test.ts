@@ -14,35 +14,55 @@ import {
 } from './route.js';
 import { createNextTelemetry, createVehicleState } from './vehicle-simulator.js';
 
+const VALID_MQTT_ENVIRONMENT = { MQTT_URL: 'mqtt://localhost:1883' } as const;
+
 describe('simulator 설정', () => {
   it('기본 설정을 적용한다', () => {
-    expect(parseSimulatorConfig({})).toEqual({
+    expect(parseSimulatorConfig(VALID_MQTT_ENVIRONMENT)).toEqual({
       mqttUrl: 'mqtt://localhost:1883',
       vehicleCount: 1,
       intervalMs: 1_000,
       randomSeed: 20_260_804,
-      routeProfile: 'mixed',
     });
+  });
+
+  it('MQTT broker URL을 필수로 요구한다', () => {
+    expect(() => parseSimulatorConfig({})).toThrow();
   });
 
   it('차량 수와 발행 주기의 허용 범위를 검증한다', () => {
-    expect(() => parseSimulatorConfig({ SIMULATOR_VEHICLE_COUNT: '0' })).toThrow();
-    expect(() => parseSimulatorConfig({ SIMULATOR_VEHICLE_COUNT: '101' })).toThrow();
-    expect(() => parseSimulatorConfig({ SIMULATOR_INTERVAL_MS: '99' })).toThrow();
+    expect(() =>
+      parseSimulatorConfig({ ...VALID_MQTT_ENVIRONMENT, SIMULATOR_VEHICLE_COUNT: '0' }),
+    ).toThrow();
+    expect(() =>
+      parseSimulatorConfig({ ...VALID_MQTT_ENVIRONMENT, SIMULATOR_VEHICLE_COUNT: '101' }),
+    ).toThrow();
+    expect(() =>
+      parseSimulatorConfig({ ...VALID_MQTT_ENVIRONMENT, SIMULATOR_INTERVAL_MS: '99' }),
+    ).toThrow();
   });
 
   it('MQTT username과 password를 함께 요구한다', () => {
-    expect(() => parseSimulatorConfig({ MQTT_USERNAME: 'simulator' })).toThrow();
-    expect(() => parseSimulatorConfig({ MQTT_PASSWORD: 'secret' })).toThrow();
+    expect(() =>
+      parseSimulatorConfig({ ...VALID_MQTT_ENVIRONMENT, MQTT_USERNAME: 'simulator' }),
+    ).toThrow();
+    expect(() =>
+      parseSimulatorConfig({ ...VALID_MQTT_ENVIRONMENT, MQTT_PASSWORD: 'secret' }),
+    ).toThrow();
   });
 
-  it('mixed profile과 등록된 특정 경로만 허용한다', () => {
-    expect(parseSimulatorConfig({ SIMULATOR_ROUTE_ID: 'seoul-busan' })).toMatchObject({
-      routeProfile: 'mixed',
+  it('등록된 특정 경로만 허용한다', () => {
+    expect(
+      parseSimulatorConfig({
+        ...VALID_MQTT_ENVIRONMENT,
+        SIMULATOR_ROUTE_ID: 'seoul-busan',
+      }),
+    ).toMatchObject({
       routeId: 'seoul-busan',
     });
-    expect(() => parseSimulatorConfig({ SIMULATOR_ROUTE_PROFILE: 'unknown' })).toThrow();
-    expect(() => parseSimulatorConfig({ SIMULATOR_ROUTE_ID: 'unknown' })).toThrow();
+    expect(() =>
+      parseSimulatorConfig({ ...VALID_MQTT_ENVIRONMENT, SIMULATOR_ROUTE_ID: 'unknown' }),
+    ).toThrow();
   });
 });
 

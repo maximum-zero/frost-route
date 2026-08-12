@@ -21,7 +21,7 @@ export interface VehicleSimulationState {
 /** 차량 번호에 대응하는 session, 경로와 분산된 초기 위치를 만든다. */
 export function createVehicleState(
   vehicleNumber: number,
-  randomSeed = 20_260_804,
+  randomSeed: number,
   requestedRouteId?: string,
 ): VehicleSimulationState {
   if (!Number.isInteger(vehicleNumber) || vehicleNumber < 1 || vehicleNumber > 100) {
@@ -46,7 +46,7 @@ export function createNextTelemetry(
   state: VehicleSimulationState,
   recordedAt: Date,
   random: () => number,
-  elapsedMs = 1_000,
+  elapsedMs: number,
 ): { message: TelemetryMessage; nextState: VehicleSimulationState } {
   if (!Number.isFinite(elapsedMs) || elapsedMs <= 0) {
     throw new RangeError('경과 시간은 0보다 큰 유한한 숫자여야 합니다.');
